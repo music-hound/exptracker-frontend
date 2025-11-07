@@ -3,10 +3,13 @@ import Layout from "../pages/Layout";
 import ErrorPage from "../pages/ErrorPage";
 import Home from "../pages/Home";
 import Transactions from "../pages/Transactions";
-import Categories, { categoriesAction, categoryLoader } from "../pages/Categories";
+import Categories from "../pages/Categories";
 import Auth from "../pages/Auth";
 import ProtectedRoute from "../components/ProtectedRoute";
-import { transactionAction, transactionLoader } from "../pages/Transactions";
+import { transactionLoader } from "../loaders/transactions.loader";
+import { transactionAction } from "../actions/transactions.action";
+import { categoriesAction } from "../actions/categories.action";
+import { categoryLoader } from "../loaders/categories.loader";
 
 export const router = createBrowserRouter([
   {

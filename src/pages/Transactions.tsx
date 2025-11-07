@@ -1,58 +1,10 @@
 import type { FC } from "react";
 import TransactionForm from "../components/TransactionForm";
-import { instance } from "../api/axios.api";
-import {
-  type ICategory,
-  type IResponseTransactionLoader,
-  type ITransaction,
-} from "../types/types";
-import { toast } from "react-toastify";
+import { type IResponseTransactionLoader } from "../types/types";
 import TransactionTable from "../components/TransactionTable";
 import { useLoaderData } from "react-router-dom";
 import { formatToUSD } from "../helpers/currency.helper";
 import Chart from "../components/Chart";
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const transactionLoader = async () => {
-  const categories = await instance.get<ICategory[]>("/categories");
-  const transactions = await instance.get<ITransaction[]>("/transactions");
-  const totalIncome = await instance.get<number>("transactions/income/find");
-  const totalExpense = await instance.get<number>("transactions/expense/find");
-
-  const data = {
-    categories: categories.data,
-    transactions: transactions.data,
-    totalIncome: totalIncome.data,
-    totalExpense: totalExpense.data,
-  };
-  return data;
-};
-
-// eslint-disable-next-line react-refresh/only-export-components
-export const transactionAction = async ({ request }) => {
-  switch (request.method) {
-    case "POST": {
-      const formData = await request.formData();
-      const newTransaction = {
-        title: formData.get("title"),
-        amount: +formData.get("amount"),
-        category: +formData.get("category"),
-        type: formData.get("type"),
-      };
-
-      await instance.post("/transactions", newTransaction);
-      toast.success("Transaction added.");
-      return null;
-    }
-    case "DELETE": {
-      const formData = await request.formData();
-      const transactionId = formData.get("id");
-      await instance.delete(`transactions/transaction/${transactionId}`);
-      toast.success("Transaction deleted.");
-      return null;
-    }
-  }
-};
 
 const Transactions: FC = () => {
   const { totalIncome, totalExpense } =
